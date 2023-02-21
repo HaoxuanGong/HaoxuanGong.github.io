@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-21T08:57:06.809Z</updated>
+  <updated>2023-02-21T09:37:52.274Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>The Four Types of Reference</title>
+    <title>Four Types of Reference In Java</title>
     <link href="http://example.com/2023/02/21/the-four-types-of-reference/"/>
     <id>http://example.com/2023/02/21/the-four-types-of-reference/</id>
     <published>2023-02-21T07:17:11.000Z</published>
-    <updated>2023-02-21T08:57:06.809Z</updated>
+    <updated>2023-02-21T09:37:52.274Z</updated>
     
     
       
@@ -35,6 +35,8 @@
     
     
     
+    <category term="java reference" scheme="http://example.com/tags/java-reference/"/>
+    
   </entry>
   
   <entry>
@@ -42,7 +44,7 @@
     <link href="http://example.com/2023/02/21/hello-world/"/>
     <id>http://example.com/2023/02/21/hello-world/</id>
     <published>2023-02-21T04:15:33.890Z</published>
-    <updated>2023-02-21T04:15:33.890Z</updated>
+    <updated>2023-02-21T09:38:58.028Z</updated>
     
     
       
@@ -55,6 +57,8 @@
     
     
     
+    
+    <category term="hello world" scheme="http://example.com/tags/hello-world/"/>
     
   </entry>
   
