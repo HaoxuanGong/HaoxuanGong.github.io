@@ -68,9 +68,9 @@ Strong Re">
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="James777G" type="application/atom+xml">
+
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="James777G" type="application/atom+xml">
 </head>
 
 
@@ -532,8 +532,8 @@ Below is an example of soft reference:
 <p>DirectByteBuffer is a class in java, and it reads files directly in operating system instead of heap.</p>
 <p>Because this file is not inside of heap, the auto gc in jvm is not able to clean it when this file is not needed. </p>
 <p>In order to not cause memory leakage, this large file is phatomly referred, while the <strong>the phantom reference onject itself</strong> is strongly referred.</p>
-<p> When the <strong>phantom reference object itself</strong> is not used, it will be placed into the referece queue during gc, and another thread “reference handler” will repeatedly looking for any phantom references inside the queue.</p>
-<p> When phantom reference is detected, the reference handler is going to invoke unsafe.freeMemory() method which is responsible for releasing the memory in the operating system.</p>
+<p> When the <strong>phantom reference object itself</strong> is still referred, it will be placed into the referece queue during gc, and another thread “reference handler” will repeatedly looking for any phantom references inside the queue.</p>
+<p> When phantom reference is detected, the reference handler is going to invoke unsafe.freeMemory() method which is responsible for releasing the memory in the operating system during full gc.</p>
 
                 
             </div>
