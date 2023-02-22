@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-21T21:45:06.547Z</updated>
+  <updated>2023-02-22T00:34:34.756Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Thread Local and Memory Leakage</title>
+    <link href="http://example.com/2023/02/22/thread-local-and-memory-leakage/"/>
+    <id>http://example.com/2023/02/22/thread-local-and-memory-leakage/</id>
+    <published>2023-02-21T22:30:21.000Z</published>
+    <updated>2023-02-22T00:34:34.756Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;ThreadLocal-and-Weak-Reference&quot;&gt;&lt;a href=&quot;#ThreadLocal-and-Weak-Reference&quot; class=&quot;headerlink&quot; title=&quot;ThreadLocal and Weak</summary>
+        
+      
+    
+    
+    
+    
+    <category term="java concurrent" scheme="http://example.com/tags/java-concurrent/"/>
+    
+  </entry>
   
   <entry>
     <title>Four Types of Reference In Java</title>
