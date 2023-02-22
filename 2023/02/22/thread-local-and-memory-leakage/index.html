@@ -60,9 +60,9 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="James777G" type="application/atom+xml">
-
+<meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="James777G" type="application/atom+xml">
 </head>
 
 
@@ -469,6 +469,13 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 <p><strong>Memory Leakage in Map:</strong></p>
 <p>When using strong reference to replace weak reference in threadLocal, the reference structure in threadLocalMap becomes similar to a common map with keys and values.</p>
 <p>If the program drops the reference to a key object in map, due to the presence of strong reference, the key and value object will not be cleaned as long as the map reference exists. In logical terms, the memory is leaked because some of the keys are on longer needed, but strictly speaking, the program can always pick up the reference of the keys by using <code>keySet()</code>, however, in practice, when the reference of an object is dropped, it is very unlikely to pick it up again using <code>keySet()</code> since it is relatively performance-consuming.</p>
+<hr>
+<h3 id="Thread-Pool"><a href="#Thread-Pool" class="headerlink" title="Thread Pool"></a>Thread Pool</h3><blockquote>
+<p>Since both map and threadLocalMap have issues regarding memory leakage, why is this issue so heavily brought up in threadLocalMap?</p>
+</blockquote>
+<p>This is because in practice, we often use thread pool which uses the same thread repeatedly, if the issue of memory leakage is not resolved, it might stacks up in the thread resulting a large proportion of memory being inaccessible.</p>
+<hr>
+<h3 id="Fix"><a href="#Fix" class="headerlink" title="Fix"></a>Fix</h3><p>Juc have already provided some enhancements regarding this issue, such as detecting for <code>null</code> keys when setting up values, however, it is strongly recommended that we use <code>remove()</code> each time when the entry pair is not needed to end its lifecycle early.</p>
 
                 
             </div>
