@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Thread Local and Memory Leakage, James777G">
-    <meta name="description" content="ThreadLocal and Weak Reference
-IntroBefore we move onto the details of threadLocal, we must firstly understand the refer">
+    <meta name="keywords" content="Do You Understand String, James777G">
+    <meta name="description" content="String might not be as easy as you thought">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Thread Local and Memory Leakage | James777G</title>
+    <title>Do You Understand String | James777G</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -325,12 +324,12 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Thread Local and Memory Leakage</h1>
+                    <h1 class="description center-align post-title">Do You Understand String</h1>
                 </div>
             </div>
         </div>
@@ -354,8 +353,12 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/java-concurrent/">
-                                <span class="chip bg-color">java concurrent</span>
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                            <a href="/tags/string/">
+                                <span class="chip bg-color">string</span>
                             </a>
                         
                     </div>
@@ -379,14 +382,14 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    836
+                    797
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    5 Min
+                    4 Min
                 </div>
                 
 
@@ -409,90 +412,88 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="ThreadLocal-and-Weak-Reference"><a href="#ThreadLocal-and-Weak-Reference" class="headerlink" title="ThreadLocal and Weak Reference"></a>ThreadLocal and Weak Reference</h2><hr>
-<h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p>Before we move onto the details of threadLocal, we must firstly understand the reference chain between threadLocal and its owner thread.</p>
-<hr>
-<h3 id="Reference-Chain"><a href="#Reference-Chain" class="headerlink" title="Reference Chain"></a>Reference Chain</h3><p><strong>–&gt; stands for strong reference, and -&gt; stands for weak reference</strong></p>
-<p>Thread –&gt; ThreadLocalMap  –&gt; Entry Pair -&gt; ThreadLocal</p>
-<p>This means, each thread stores a reference to its threadLocalMap which is null when no threadLocal is stored, and each threadLocalMap has a strong reference relationship with its local entry pair that stores ThreadLocal as key and its generic type as value. In addition, each threadLocal is weakly referred by its owner entry pair.</p>
-<hr>
-<h3 id="Code-Example"><a href="#Code-Example" class="headerlink" title="Code Example"></a>Code Example</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> threadLocal <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
-
-        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
-            threadLocal<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">222</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">Integer</span> integer <span class="token operator">=</span> threadLocal<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            threadLocal<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>threadLocal<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-
-        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
-            threadLocal<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">223</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">Integer</span> integer <span class="token operator">=</span> threadLocal<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
-            <span class="token class-name">Integer</span> integer <span class="token operator">=</span> threadLocal<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
+                <h2 id="Do-You-Actually-Understand-String"><a href="#Do-You-Actually-Understand-String" class="headerlink" title="Do You Actually Understand String"></a>Do You Actually Understand String</h2><p>Have a look at the code below, if you know what the output is, then probably this blog is useless to you.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">String</span> s1 <span class="token operator">=</span> <span class="token string">"a"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s2 <span class="token operator">=</span> <span class="token string">"a"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s5 <span class="token operator">=</span> <span class="token string">"ab"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s6 <span class="token operator">=</span> <span class="token string">"a"</span> <span class="token operator">+</span> <span class="token string">"b"</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s7 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> s8 <span class="token operator">=</span> s7<span class="token punctuation">.</span><span class="token function">intern</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s1 <span class="token operator">==</span> s2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s3 <span class="token operator">==</span> s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s4 <span class="token operator">==</span> s3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s5 <span class="token operator">==</span> s6<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s7 <span class="token operator">==</span> s6<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s8 <span class="token operator">==</span> s6<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+
 `````
 
-<span class="token class-name">The</span> output in the console is<span class="token operator">:</span>
+
+<span class="token class-name">The</span> output is<span class="token operator">:</span>
 
 ````java
-<span class="token number">222</span>
-<span class="token keyword">null</span>
-<span class="token number">223</span>
-<span class="token keyword">null</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token boolean">true</span>
+<span class="token boolean">false</span>
+<span class="token boolean">false</span>
+<span class="token boolean">true</span>
+<span class="token boolean">false</span>
+<span class="token boolean">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-
-<p>The above code has a private static local constant <strong>threadLocal</strong> that is shared among three different threads.</p>
-<p>In the first thread, by invoking <code>threadLocal.set(222); </code>, the entry pair inside the the threadLocalMap in the first thread is given the key <strong>threadLocal object</strong> and value <strong>Integer 222</strong>.</p>
-<p>This means, this entry pair <code>[threadLocal, 222]</code> is independent from other threads and only accessible by its owner thread.</p>
-<br>
-
-
-<p>In the second thread, the same <strong>threadLocal Object</strong> is assigned to its local entry pair with the same key as the first thread. However, due to the fact that there is no relationship between the threadLocalMap and entry pairs in the two threads, the integer value <strong>222</strong> is not accessible by the second thread.</p>
-<br>
-
-<p>This is also well proven by the result given in the third thread when the value is not <strong>reset</strong>. Because there is no entry pair or even threadLocalMap initilized yet and owned by this thread, the result should be null as shown in the console.</p>
-<hr>
-<h3 id="Memory-Leakage"><a href="#Memory-Leakage" class="headerlink" title="Memory Leakage"></a>Memory Leakage</h3><p><strong>Conclusion:</strong></p>
 <blockquote>
-<p>The memory leakage in threadLocal has nothing to do with its weak reference, instead, the use of weak reference has reduces the amount of memory leaked if exists.</p>
+<p>Did you get the answer?</p>
 </blockquote>
-<p>ThreadLocal is weakly referred by its entry pair, this indicates that threadLocal is cleaned when there is no other strong references pointing to the threadLocal object. </p>
-<p>When threadLocal is cleaned, there will be no key pointing to the respective value in the entry pair, since the value is strongly referred by the entry pair then threadLocalMap and then Thread, the value in the entry pair will not be cleaned as long as the reference of the thread exists. </p>
-<p>This ends up a proportion of memory being used but cannot be accessed, because key is already null.</p>
-<p><strong>Is Weak Reference the Issue?</strong></p>
-<p>Now consider using strong reference to replace the relationship between the entry pair and threadLocal, does the problem of memory leakage still exist?</p>
+<hr>
+<h3 id="Final-String"><a href="#Final-String" class="headerlink" title="Final String"></a>Final String</h3><p>As we are all awared of, the attributes of String are all described as final, but why?</p>
 <blockquote>
-<p>The answer is YES, and here is why:</p>
+<p>I would use an immutable whenever I can.    -James Gosling</p>
 </blockquote>
-<p>If we have no other reference pointing to the threadLocal object other than the strong reference that is from the entry pair, we will not be able to access the threadLocal object anyway, thus leaving the memory used by the threadLocal object uncleaned would only cause more memory to be leaked.</p>
-<p>Even though, with the aid of strong reference, juc could provide us a new method such as <code>keySet()</code> to <strong>pick up</strong> the reference of the keys, but since the reference of the key is already gone, the occasions to use this method is practice is very limited.</p>
-<p><strong>Memory Leakage in Map:</strong></p>
-<p>When using strong reference to replace weak reference in threadLocal, the reference structure in threadLocalMap becomes similar to a common map with keys and values.</p>
-<p>If the program drops the reference to a key object in map, due to the presence of strong reference, the key and value object will not be cleaned as long as the map reference exists. In logical terms, the memory is leaked because some of the keys are on longer needed, but strictly speaking, the program can always pick up the reference of the keys by using <code>keySet()</code>, however, in practice, when the reference of an object is dropped, it is very unlikely to pick it up again using <code>keySet()</code> since it is relatively performance-consuming.</p>
+<p><strong>The importance of string being final:</strong></p>
+<p>String is one of the most common data types we use in any program, so it is essential for jvm to handle this special object separately and uniquely to save the memory in heap.</p>
+<p>Jvm uses the final property of string for cache, this means the same string object could be only created once and all the reference will point to the same object in heap.</p>
+<p> In this case, if string is not declared as final, when there is a change to the string itself, all the references to this string object will receive this change, which is certainly fatal.</p>
 <hr>
-<h3 id="Thread-Pool"><a href="#Thread-Pool" class="headerlink" title="Thread Pool"></a>Thread Pool</h3><blockquote>
-<p>Since both map and threadLocalMap have issues regarding memory leakage, why is this issue so heavily brought up in threadLocalMap?</p>
+<h3 id="String-Table"><a href="#String-Table" class="headerlink" title="String Table"></a>String Table</h3><p> String table is a logical component in jvm, and is a part of the runtime constants pool inside metaspace which stores the reference that points to the string objects in heap.</p>
+<p> String table perserves a hashtable structure, thus it’s performance is highly related to the number of buckets and the number of string objects to be inserted, which results in the difference in the length of chain and the probability of collisions.</p>
+<p> All the string constants such as <code>"a"</code> will be inserted into the string table in a lazy manner, and for any declarations of <code>"a"</code> will be assigned with the same duplicated reference address. </p>
+<p> Now look back to the code:</p>
+<pre><code class="java">    public static void main(String[] args) {
+        String s1 = "a";
+        String s2 = "a";
+        String s3 = new String("a");
+        String s4 = new String(s1);
+        String s5 = "ab";
+        String s6 = "a" + "b";
+        String s7 = new String("a") + new String("b");
+        String s8 = s7.intern();
+        
+        
+        System.out.println(s1 == s2);
+        System.out.println(s3 == s1);
+        System.out.println(s4 == s3);
+        System.out.println(s5 == s6);
+        System.out.println(s7 == s6);
+        System.out.println(s8 == s6);
+    }
+</code></pre>
+<p><code>"a"</code> will be loaded into string table when <code>String s1 = "a"</code> is executed, and <code>String s2</code> will be given the same duplicated object reference as s1, thus <code>System.out.println(s1 == s2);</code> will output true.</p>
+<p>However, as you have noticed, <code>System.out.println(s3 == s1);</code> gives an output <code>false</code>. </p>
+<p>Is not the object already exists in the string table?</p>
+<blockquote>
+<p>The answer is yes.</p>
 </blockquote>
-<p>This is because in practice, we often use thread pool which uses the same thread repeatedly, if the issue of memory leakage is not resolved, it might stacks up in the thread resulting a large proportion of memory being inaccessible.</p>
-<hr>
-<h3 id="Fix"><a href="#Fix" class="headerlink" title="Fix"></a>Fix</h3><p>Juc have already provided some enhancements regarding this issue, such as detecting for <code>null</code> keys when setting up values, however, it is strongly recommended that we use <code>remove()</code> each time when the entry pair is not needed to end its lifecycle early.</p>
+<p>This output appears due to the mechanism of how the constructors are executed. To be more precise, the empty constructor will always execute no matter if your constructor has parameters. </p>
+<p>This will create a new object of string based on the value of the string passed in, but worry not, all the attributes of the new string will possess the same duplicated reference as the old string, and this explains why <code>System.out.println(s3 == s1);</code> and <code>System.out.println(s4 == s3);</code> gives an output <code>false</code>.</p>
+<p><code>System.out.println(s5 == s6);</code> gives an output true, because any addition between the string constants such as <code>"a" + "b"</code> will directly be compiled into <code>"ab"</code> during compilation, which in this case, refers to the same string object in string table.</p>
+<p>The execution of <code>String s7 = new String("a") + new String("b");</code> is a little bit complicated, because this statement will create six objects in total if not already exists in string table. </p>
+<p>String object <code>"a"</code>, String object <code>"b"</code> <strong>new</strong> String object <code>"a"</code>, <strong>new</strong> String object <code>"b"</code>, StringBuilder object and **new **String object <code>"ab"</code> produced to <code>toString()</code> method. Because toString works the same way as creating a new String and the plus sign  between <code>new String("a")</code> and <code>"new String("b")"</code> does not invoke the auto conjunction of string (because it is the syntatic sugar for <code>append()</code>), so <code>System.out.println(s7 == s6);</code> will undoubtedly give false.</p>
+<h3 id="intern"><a href="#intern" class="headerlink" title="intern()"></a><code>intern()</code></h3><p>The intern method tries to insert the current string into string table, and returns the string object inside the string table.</p>
+<p>In this case, <code>String s8 = s7.intern();</code> will try to insert s7 into string table, however, <code>"ab"</code> already exists in the string table, so this method will return the <code>"ab"</code> object that was inserted into the string table at start.<br>Thus <code>System.out.println(s8 == s6);</code> gives true.</p>
 
                 
             </div>
@@ -519,7 +520,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2023/02/22/thread-local-and-memory-leakage/">http://example.com/2023/02/22/thread-local-and-memory-leakage/</a>
+                    <a href="http://example.com/2023/02/22/do-you-understand-string/">http://example.com/2023/02/22/do-you-understand-string/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -557,8 +558,12 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/java-concurrent/">
-                                    <span class="chip bg-color">java concurrent</span>
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
+                                </a>
+                            
+                                <a href="/tags/string/">
+                                    <span class="chip bg-color">string</span>
                                 </a>
                             
                         </div>
@@ -904,9 +909,10 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2023/02/22/do-you-understand-string/">
                     <div class="card-image">
@@ -924,9 +930,9 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-22
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-22
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -935,6 +941,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -957,13 +964,13 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/21/the-four-types-of-reference/">
+                <a href="/2023/02/22/thread-local-and-memory-leakage/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Four Types of Reference In Java">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Thread Local and Memory Leakage">
                         
-                        <span class="card-title">Four Types of Reference In Java</span>
+                        <span class="card-title">Thread Local and Memory Leakage</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -974,7 +981,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-22
                             </span>
                         <span class="publish-author">
                             
@@ -987,8 +994,8 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/java-reference/">
-                        <span class="chip bg-color">java reference</span>
+                    <a href="/tags/java-concurrent/">
+                        <span class="chip bg-color">java concurrent</span>
                     </a>
                     
                 </div>
