@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>James777G</title>
   
-  <subtitle>My Blog</subtitle>
+  <subtitle>James777G</subtitle>
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-22T11:23:26.916Z</updated>
+  <updated>2023-02-22T23:20:02.807Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2023/02/22/do-you-understand-string/"/>
     <id>http://example.com/2023/02/22/do-you-understand-string/</id>
     <published>2023-02-22T09:45:43.000Z</published>
-    <updated>2023-02-22T11:23:26.916Z</updated>
+    <updated>2023-02-22T23:20:02.807Z</updated>
     
     
       
