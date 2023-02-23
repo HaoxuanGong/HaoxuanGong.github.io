@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-23T04:36:22.860Z</updated>
+  <updated>2023-02-23T11:58:55.136Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HashMap Synchronized Map and ConcurrentHashMap</title>
+    <link href="http://example.com/2023/02/23/hashmap-synchronized-map-and-concurrenthashmap/"/>
+    <id>http://example.com/2023/02/23/hashmap-synchronized-map-and-concurrenthashmap/</id>
+    <published>2023-02-23T08:23:32.000Z</published>
+    <updated>2023-02-23T11:58:55.136Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Maps&quot;&gt;Maps&lt;/h2&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;HashMap&quot;&gt;HashMap&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In JDK 7 and before: HashMap is implemented using an array and</summary>
+        
+      
+    
+    
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="map" scheme="http://example.com/tags/map/"/>
+    
+  </entry>
   
   <entry>
     <title>Do You Understand String</title>
