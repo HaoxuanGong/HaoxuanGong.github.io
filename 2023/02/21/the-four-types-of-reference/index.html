@@ -8,13 +8,14 @@
     <meta name="description" content="The Four Types of Reference In Java
 
 Index:
+
 Strong Reference
 Soft Reference
 Weak Reference
 Phantom Reference
 
 
-Strong Re">
+Strong R">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -165,7 +166,7 @@ Strong Re">
     </a>
   </li>
   <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="dark/light mode" >
       <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
     </a>
   </li>
@@ -417,20 +418,20 @@ Strong Re">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="The-Four-Types-of-Reference-In-Java"><a href="#The-Four-Types-of-Reference-In-Java" class="headerlink" title="The Four Types of Reference In Java"></a>The Four Types of Reference In Java</h1><br>
-
-<h2 id="Index"><a href="#Index" class="headerlink" title="Index:"></a>Index:</h2><ol>
+                <h1>The Four Types of Reference In Java</h1>
+<br>
+<h2 id="Index">Index:</h2>
+<ol>
 <li>Strong Reference</li>
 <li>Soft Reference</li>
 <li>Weak Reference</li>
 <li>Phantom Reference</li>
 </ol>
 <hr>
-<h3 id="Strong-Reference"><a href="#Strong-Reference" class="headerlink" title="Strong Reference:"></a>Strong Reference:</h3><p> Under normal circumstances, the reference type we use is strong reference.
+<h3 id="Strong-Reference">Strong Reference:</h3>
+<p> Under normal circumstances, the reference type we use is strong reference.
 For example:<br>
 </p>
-
-
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
 <span class="token keyword">package</span> <span class="token namespace">org<span class="token punctuation">.</span>example</span><span class="token punctuation">;</span>
 
@@ -460,21 +461,22 @@ For example:<br>
     <span class="token punctuation">}</span>
 
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>In this case, both person “james” and “ethan” are strongly referred by variable “a” and “b” respectively.<br>This means the two <strong>Person Objects</strong> is never going to be cleaned by gc in any forms, as long as the references of these two objects still exist.</p>
+<p>In this case, both person “james” and “ethan” are strongly referred by variable “a” and “b” respectively.<br>
+This means the two <strong>Person Objects</strong> is never going to be cleaned by gc in any forms, as long as the references of these two objects still exist.</p>
 <p>The output is:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span>james<span class="token punctuation">)</span>
 <span class="token keyword">null</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>This happens because “james” is no longer referred and thus is cleaned by gc.</p>
 <hr>
-<h3 id="Soft-Reference"><a href="#Soft-Reference" class="headerlink" title="Soft Reference:"></a>Soft Reference:</h3><p>
+<h3 id="Soft-Reference">Soft Reference:</h3>
+<p>
 Below is an example of soft reference:
 </p>
-
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SoftReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SoftReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"james"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>The objects that are softly referred will be cleaned by gc whenever there is a shortage in memory.</p>
 <hr>
-<h3 id="Weak-Reference"><a href="#Weak-Reference" class="headerlink" title="Weak Reference:"></a>Weak Reference:</h3><p>Below is an example of weak reference:</p>
+<h3 id="Weak-Reference">Weak Reference:</h3>
+<p>Below is an example of weak reference:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>ref<span class="token punctuation">.</span></span><span class="token class-name">SoftReference</span></span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>ref<span class="token punctuation">.</span></span><span class="token class-name">WeakReference</span></span><span class="token punctuation">;</span>
 
@@ -497,7 +499,6 @@ Below is an example of soft reference:
     <span class="token punctuation">}</span>
 
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>The output console is:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span>james<span class="token punctuation">)</span>
 <span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Ethan</span><span class="token punctuation">)</span>
@@ -505,15 +506,14 @@ Below is an example of soft reference:
 <span class="token keyword">null</span>
 <span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Ethan</span><span class="token punctuation">)</span>
 <span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Richard</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>Weak reference is roughly similar to soft reference, the only difference is that weakly referred objects will be cleaned whenever gc is occured.</p>
-<p>In the example above, <strong>“james”</strong> is weakly referred, <strong>“Ethan”</strong> is Stongly referred and <strong>“Richard”</strong> is softly referred. </p>
+<p>In the example above, <strong>“james”</strong> is weakly referred, <strong>“Ethan”</strong> is Stongly referred and <strong>“Richard”</strong> is softly referred.</p>
 <p>When gc happens, all the weakly referred objects will be cleaned such as “james”.</p>
 <p>Since my program is not short of memory, “Richard” will not be cleaned.</p>
 <p>“Ethan” is strongly referred, so “Ethan” is never going to be cleaned.</p>
 <hr>
-<h3 id="Phantom-Reference"><a href="#Phantom-Reference" class="headerlink" title="Phantom Reference:"></a>Phantom Reference:</h3><br>
-
+<h3 id="Phantom-Reference">Phantom Reference:</h3>
+<br>
 <p>Phatom reference is always used together with a reference queue:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
 
@@ -544,13 +544,12 @@ Below is an example of soft reference:
     <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
         <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span> 
     <span class="token punctuation">}</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>What is phantom reference for:</p>
 <p>DirectByteBuffer is a class in java, and it reads files directly in operating system instead of heap.</p>
-<p>Because this file is not inside of heap, the auto gc in jvm is not able to clean it when this file is not needed. </p>
+<p>Because this file is not inside of heap, the auto gc in jvm is not able to clean it when this file is not needed.</p>
 <p>In order to not cause memory leakage, this large file is phatomly referred, while the <strong>the phantom reference onject itself</strong> is strongly referred.</p>
-<p> When the <strong>phantom reference object itself</strong> is still referred, it will be placed into the referece queue during gc, and another thread “reference handler” will repeatedly looking for any phantom references inside the queue.</p>
-<p> When phantom reference is detected, the reference handler is going to invoke unsafe.freeMemory() method which is responsible for releasing the memory in the operating system during full gc.</p>
+<p>When the <strong>phantom reference object itself</strong> is still referred, it will be placed into the referece queue during gc, and another thread “reference handler” will repeatedly looking for any phantom references inside the queue.</p>
+<p>When phantom reference is detected, the reference handler is going to invoke unsafe.freeMemory() method which is responsible for releasing the memory in the operating system during full gc.</p>
 
                 
             </div>
@@ -942,7 +941,7 @@ Below is an example of soft reference:
         avatar: 'monsterid',
         pageSize: '10',
         lang: 'en',
-        placeholder: 'just go go'
+        placeholder: '&gt;_&lt;'
     });
 </script>
 
@@ -1234,10 +1233,6 @@ Below is an example of soft reference:
 
 
 
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
 
 </div>
     </div>

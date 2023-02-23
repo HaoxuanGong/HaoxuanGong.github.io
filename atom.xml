@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-22T23:20:02.807Z</updated>
+  <updated>2023-02-23T04:36:22.860Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,14 +21,15 @@
     <link href="http://example.com/2023/02/22/do-you-understand-string/"/>
     <id>http://example.com/2023/02/22/do-you-understand-string/</id>
     <published>2023-02-22T09:45:43.000Z</published>
-    <updated>2023-02-22T23:20:02.807Z</updated>
+    <updated>2023-02-23T04:36:22.860Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h2 id=&quot;Do-You-Actually-Understand-String&quot;&gt;&lt;a href=&quot;#Do-You-Actually-Understand-String&quot; class=&quot;headerlink&quot; title=&quot;Do You Actually</summary>
+    <summary type="html">&lt;h2 id=&quot;Do-You-Actually-Understand-String&quot;&gt;Do You Actually Understand String&lt;/h2&gt;
+&lt;p&gt;Have a look at the code below, if you know what the</summary>
         
       
     
@@ -53,7 +54,10 @@
       
         
         
-    <summary type="html">&lt;h2 id=&quot;ThreadLocal-and-Weak-Reference&quot;&gt;&lt;a href=&quot;#ThreadLocal-and-Weak-Reference&quot; class=&quot;headerlink&quot; title=&quot;ThreadLocal and Weak</summary>
+    <summary type="html">&lt;h2 id=&quot;ThreadLocal-and-Weak-Reference&quot;&gt;ThreadLocal and Weak Reference&lt;/h2&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;Intro&quot;&gt;Intro&lt;/h3&gt;
+&lt;p&gt;Before we move onto the</summary>
         
       
     
@@ -76,7 +80,12 @@
       
         
         
-    <summary type="html">&lt;h1 id=&quot;The-Four-Types-of-Reference-In-Java&quot;&gt;&lt;a href=&quot;#The-Four-Types-of-Reference-In-Java&quot; class=&quot;headerlink&quot; title=&quot;The Four Types of</summary>
+    <summary type="html">&lt;h1&gt;The Four Types of Reference In Java&lt;/h1&gt;
+&lt;br&gt;
+&lt;h2 id=&quot;Index&quot;&gt;Index:&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Strong Reference&lt;/li&gt;
+&lt;li&gt;Soft</summary>
         
       
     

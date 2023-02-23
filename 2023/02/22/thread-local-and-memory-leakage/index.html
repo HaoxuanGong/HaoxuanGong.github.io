@@ -6,7 +6,9 @@
     <meta charset="utf-8">
     <meta name="keywords" content="Thread Local and Memory Leakage, James777G">
     <meta name="description" content="ThreadLocal and Weak Reference
-IntroBefore we move onto the details of threadLocal, we must firstly understand the refer">
+
+Intro
+Before we move onto the details of threadLocal, we must firstly understand the ref">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -157,7 +159,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
     </a>
   </li>
   <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="dark/light mode" >
       <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
     </a>
   </li>
@@ -379,7 +381,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    836
+                    840
                 </div>
                 
 
@@ -409,14 +411,18 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="ThreadLocal-and-Weak-Reference"><a href="#ThreadLocal-and-Weak-Reference" class="headerlink" title="ThreadLocal and Weak Reference"></a>ThreadLocal and Weak Reference</h2><hr>
-<h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p>Before we move onto the details of threadLocal, we must firstly understand the reference chain between threadLocal and its owner thread.</p>
+                <h2 id="ThreadLocal-and-Weak-Reference">ThreadLocal and Weak Reference</h2>
 <hr>
-<h3 id="Reference-Chain"><a href="#Reference-Chain" class="headerlink" title="Reference Chain"></a>Reference Chain</h3><p><strong>–&gt; stands for strong reference, and -&gt; stands for weak reference</strong></p>
-<p>Thread –&gt; ThreadLocalMap  –&gt; Entry Pair -&gt; ThreadLocal</p>
+<h3 id="Intro">Intro</h3>
+<p>Before we move onto the details of threadLocal, we must firstly understand the reference chain between threadLocal and its owner thread.</p>
+<hr>
+<h3 id="Reference-Chain">Reference Chain</h3>
+<p><strong>–&gt; stands for strong reference, and -&gt; stands for weak reference</strong></p>
+<p>Thread --&gt; ThreadLocalMap  --&gt; Entry Pair -&gt; ThreadLocal</p>
 <p>This means, each thread stores a reference to its threadLocalMap which is null when no threadLocal is stored, and each threadLocalMap has a strong reference relationship with its local entry pair that stores ThreadLocal as key and its generic type as value. In addition, each threadLocal is weakly referred by its owner entry pair.</p>
 <hr>
-<h3 id="Code-Example"><a href="#Code-Example" class="headerlink" title="Code Example"></a>Code Example</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+<h3 id="Code-Example">Code Example</h3>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> threadLocal <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -456,25 +462,21 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 <span class="token keyword">null</span>
 <span class="token number">223</span>
 <span class="token keyword">null</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
 <p>The above code has a private static local constant <strong>threadLocal</strong> that is shared among three different threads.</p>
 <p>In the first thread, by invoking <code>threadLocal.set(222); </code>, the entry pair inside the the threadLocalMap in the first thread is given the key <strong>threadLocal object</strong> and value <strong>Integer 222</strong>.</p>
 <p>This means, this entry pair <code>[threadLocal, 222]</code> is independent from other threads and only accessible by its owner thread.</p>
 <br>
-
-
 <p>In the second thread, the same <strong>threadLocal Object</strong> is assigned to its local entry pair with the same key as the first thread. However, due to the fact that there is no relationship between the threadLocalMap and entry pairs in the two threads, the integer value <strong>222</strong> is not accessible by the second thread.</p>
 <br>
-
 <p>This is also well proven by the result given in the third thread when the value is not <strong>reset</strong>. Because there is no entry pair or even threadLocalMap initilized yet and owned by this thread, the result should be null as shown in the console.</p>
 <hr>
-<h3 id="Memory-Leakage"><a href="#Memory-Leakage" class="headerlink" title="Memory Leakage"></a>Memory Leakage</h3><p><strong>Conclusion:</strong></p>
+<h3 id="Memory-Leakage">Memory Leakage</h3>
+<p><strong>Conclusion:</strong></p>
 <blockquote>
 <p>The memory leakage in threadLocal has nothing to do with its weak reference, instead, the use of weak reference has reduces the amount of memory leaked if exists.</p>
 </blockquote>
-<p>ThreadLocal is weakly referred by its entry pair, this indicates that threadLocal is cleaned when there is no other strong references pointing to the threadLocal object. </p>
-<p>When threadLocal is cleaned, there will be no key pointing to the respective value in the entry pair, since the value is strongly referred by the entry pair then threadLocalMap and then Thread, the value in the entry pair will not be cleaned as long as the reference of the thread exists. </p>
+<p>ThreadLocal is weakly referred by its entry pair, this indicates that threadLocal is cleaned when there is no other strong references pointing to the threadLocal object.</p>
+<p>When threadLocal is cleaned, there will be no key pointing to the respective value in the entry pair, since the value is strongly referred by the entry pair then threadLocalMap and then Thread, the value in the entry pair will not be cleaned as long as the reference of the thread exists.</p>
 <p>This ends up a proportion of memory being used but cannot be accessed, because key is already null.</p>
 <p><strong>Is Weak Reference the Issue?</strong></p>
 <p>Now consider using strong reference to replace the relationship between the entry pair and threadLocal, does the problem of memory leakage still exist?</p>
@@ -487,12 +489,14 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 <p>When using strong reference to replace weak reference in threadLocal, the reference structure in threadLocalMap becomes similar to a common map with keys and values.</p>
 <p>If the program drops the reference to a key object in map, due to the presence of strong reference, the key and value object will not be cleaned as long as the map reference exists. In logical terms, the memory is leaked because some of the keys are on longer needed, but strictly speaking, the program can always pick up the reference of the keys by using <code>keySet()</code>, however, in practice, when the reference of an object is dropped, it is very unlikely to pick it up again using <code>keySet()</code> since it is relatively performance-consuming.</p>
 <hr>
-<h3 id="Thread-Pool"><a href="#Thread-Pool" class="headerlink" title="Thread Pool"></a>Thread Pool</h3><blockquote>
+<h3 id="Thread-Pool">Thread Pool</h3>
+<blockquote>
 <p>Since both map and threadLocalMap have issues regarding memory leakage, why is this issue so heavily brought up in threadLocalMap?</p>
 </blockquote>
 <p>This is because in practice, we often use thread pool which uses the same thread repeatedly, if the issue of memory leakage is not resolved, it might stacks up in the thread resulting a large proportion of memory being inaccessible.</p>
 <hr>
-<h3 id="Fix"><a href="#Fix" class="headerlink" title="Fix"></a>Fix</h3><p>Juc have already provided some enhancements regarding this issue, such as detecting for <code>null</code> keys when setting up values, however, it is strongly recommended that we use <code>remove()</code> each time when the entry pair is not needed to end its lifecycle early.</p>
+<h3 id="Fix">Fix</h3>
+<p>Juc have already provided some enhancements regarding this issue, such as detecting for <code>null</code> keys when setting up values, however, it is strongly recommended that we use <code>remove()</code> each time when the entry pair is not needed to end its lifecycle early.</p>
 
                 
             </div>
@@ -884,7 +888,7 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
         avatar: 'monsterid',
         pageSize: '10',
         lang: 'en',
-        placeholder: 'just go go'
+        placeholder: '&gt;_&lt;'
     });
 </script>
 
@@ -1180,10 +1184,6 @@ IntroBefore we move onto the details of threadLocal, we must firstly understand 
 
 
 
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
 
 </div>
     </div>
