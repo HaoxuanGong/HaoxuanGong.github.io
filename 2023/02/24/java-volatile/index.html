@@ -4,18 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Four Types of Reference In Java, James777G">
-    <meta name="description" content="The Four Types of Reference In Java
-
-Index:
-
-Strong Reference
-Soft Reference
-Weak Reference
-Phantom Reference
+    <meta name="keywords" content="Java Volatile, James777G">
+    <meta name="description" content="Volatile
 
 
-Strong R">
+Conclusion: Volatile ensures visibility and ordering, and does not ensure atomicity.
+
+This blog will be focus">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -27,7 +22,7 @@ Strong R">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Four Types of Reference In Java | James777G</title>
+    <title>Java Volatile | James777G</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -334,12 +329,12 @@ Strong R">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Four Types of Reference In Java</h1>
+                    <h1 class="description center-align post-title">Java Volatile</h1>
                 </div>
             </div>
         </div>
@@ -363,8 +358,12 @@ Strong R">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/java-reference/">
-                                <span class="chip bg-color">java reference</span>
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                            <a href="/tags/java-concurrent/">
+                                <span class="chip bg-color">java concurrent</span>
                             </a>
                         
                     </div>
@@ -379,7 +378,7 @@ Strong R">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-02-21
+                    2023-02-24
                 </div>
                 
 
@@ -388,14 +387,14 @@ Strong R">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    607
+                    944
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    3 Min
+                    5 Min
                 </div>
                 
 
@@ -418,138 +417,212 @@ Strong R">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1>The Four Types of Reference In Java</h1>
-<br>
-<h2 id="Index">Index:</h2>
+                <h2 id="Volatile">Volatile</h2>
+<hr>
+<blockquote>
+<p>Conclusion: Volatile ensures visibility and ordering, and does not ensure atomicity.</p>
+</blockquote>
+<p>This blog will be focusing on how these principles are ensured by volatile and what they are.</p>
+<hr>
+<h3 id="Java-Memory-Model">Java Memory Model</h3>
+<p><strong>In order to understand what these principles are, we must firstly understand java memory model (JMM)</strong></p>
+<p>Java memory model is the abstraction of how the different cores achieves communication through cache coherency protocol such as <code>MESI</code>, and it exists such that the developers can focus on JMM without trying to figure out how communication is achieved in different processors and operating systems.</p>
+<p>In Java memory model, we have ruled:</p>
 <ol>
-<li>Strong Reference</li>
-<li>Soft Reference</li>
-<li>Weak Reference</li>
-<li>Phantom Reference</li>
+<li>
+<p>Before the thread is unlocked, the thread must stores the values of the shared variables into the main memory.</p>
+</li>
+<li>
+<p>Before the thread is locked, the thread must read the latest value from the main memory into its local cache.</p>
+</li>
+<li>
+<p>The lock used to lock and unlock is the same lock, which means releasing other locks has no effect on the current lock.</p>
+</li>
 </ol>
 <hr>
-<h3 id="Strong-Reference">Strong Reference:</h3>
-<p> Under normal circumstances, the reference type we use is strong reference.
-For example:<br>
-</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token keyword">package</span> <span class="token namespace">org<span class="token punctuation">.</span>example</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">lombok<span class="token punctuation">.</span></span><span class="token class-name">AllArgsConstructor</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">lombok<span class="token punctuation">.</span></span><span class="token class-name">Data</span></span><span class="token punctuation">;</span>
-
-<span class="token annotation punctuation">@Data</span>
-<span class="token annotation punctuation">@AllArgsConstructor</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-
-<span class="token class-name">Person</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"james"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token class-name">Person</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"ethan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token class-name">Person</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"james"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        a <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>In this case, both person “james” and “ethan” are strongly referred by variable “a” and “b” respectively.<br>
-This means the two <strong>Person Objects</strong> is never going to be cleaned by gc in any forms, as long as the references of these two objects still exist.</p>
-<p>The output is:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span>james<span class="token punctuation">)</span>
-<span class="token keyword">null</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>This happens because “james” is no longer referred and thus is cleaned by gc.</p>
-<hr>
-<h3 id="Soft-Reference">Soft Reference:</h3>
-<p>
-Below is an example of soft reference:
-</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SoftReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SoftReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"james"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>The objects that are softly referred will be cleaned by gc whenever there is a shortage in memory.</p>
-<hr>
-<h3 id="Weak-Reference">Weak Reference:</h3>
-<p>Below is an example of weak reference:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>ref<span class="token punctuation">.</span></span><span class="token class-name">SoftReference</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>ref<span class="token punctuation">.</span></span><span class="token class-name">WeakReference</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token class-name">WeakReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"james"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">SoftReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span> c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SoftReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Richard"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Person</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Ethan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>The output console is:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span>james<span class="token punctuation">)</span>
-<span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Ethan</span><span class="token punctuation">)</span>
-<span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Richard</span><span class="token punctuation">)</span>
-<span class="token keyword">null</span>
-<span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Ethan</span><span class="token punctuation">)</span>
-<span class="token class-name">Person</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token class-name">Richard</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Weak reference is roughly similar to soft reference, the only difference is that weakly referred objects will be cleaned whenever gc is occured.</p>
-<p>In the example above, <strong>“james”</strong> is weakly referred, <strong>“Ethan”</strong> is Stongly referred and <strong>“Richard”</strong> is softly referred.</p>
-<p>When gc happens, all the weakly referred objects will be cleaned such as “james”.</p>
-<p>Since my program is not short of memory, “Richard” will not be cleaned.</p>
-<p>“Ethan” is strongly referred, so “Ethan” is never going to be cleaned.</p>
-<hr>
-<h3 id="Phantom-Reference">Phantom Reference:</h3>
-<br>
-<p>Phatom reference is always used together with a reference queue:</p>
+<h3 id="Visibility">Visibility</h3>
+<p>Before I explain what visibility is, please have a look at the code below:</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
 
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token class-name">ReferenceQueue</span> queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReferenceQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token class-name">PhantomReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">&gt;</span></span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhantomReference</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"james"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> queue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+           <span class="token keyword">try</span> <span class="token punctuation">{</span>
+               <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+               <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+           <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"a = a + 1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           a<span class="token operator">++</span><span class="token punctuation">;</span>
+           <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"finished"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"start"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Outside"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>This piece of code initialized two threads, where one thread increase the value of a by one, and another thread enters a loop that breaks when a is not equal to 10.</p>
+<hr>
+<blockquote>
+<p>The output of the code is:</p>
+</blockquote>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">start
+a <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">1</span>
+finished<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>This output means the loop in the second thread is never breaked, and the value of a that is updated in the first thread is not updated to the second thread, in other words, the value of a is <strong>not visible</strong> to different threads.</p>
+<p>Now look at the same code with volatile keyword:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
 
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>The output in console is:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">null</span>
-<span class="token keyword">null</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>This is because get() method in phantom reference always return null:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/** 
-     * Returns this reference object's referent.  Because the referent of a 
-     * phantom reference is always inaccessible, this method always returns 
-     * {@code null}. 
-     * 
-     * @return {@code null} 
-     */</span> 
-    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
-        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span> 
-    <span class="token punctuation">}</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>What is phantom reference for:</p>
-<p>DirectByteBuffer is a class in java, and it reads files directly in operating system instead of heap.</p>
-<p>Because this file is not inside of heap, the auto gc in jvm is not able to clean it when this file is not needed.</p>
-<p>In order to not cause memory leakage, this large file is phatomly referred, while the <strong>the phantom reference onject itself</strong> is strongly referred.</p>
-<p>When the <strong>phantom reference object itself</strong> is still referred, it will be placed into the referece queue during gc, and another thread “reference handler” will repeatedly looking for any phantom references inside the queue.</p>
-<p>When phantom reference is detected, the reference handler is going to invoke unsafe.freeMemory() method which is responsible for releasing the memory in the operating system during full gc.</p>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">volatile</span> <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+       <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+           <span class="token keyword">try</span> <span class="token punctuation">{</span>
+               <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+               <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+           <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"a = a + 1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           a<span class="token operator">++</span><span class="token punctuation">;</span>
+           <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"finished"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"start"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Outside"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p>Unsuprisingly, the output is:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">start
+a <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">1</span>
+finished
+<span class="token class-name">Outside</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>This output indicates the updated value of a is <strong>visible</strong> to different threads.</p>
+<p>The visibility ensured by <code>volatile</code> is achieved through inserting <strong>memory barriers</strong> in store buffer and invalidate queue that maintains the performance of its local cpu and reduce the cost communication under MESI protocol.</p>
+<p>In this blog, we will only focus on the concurrency as explained by java memory model.</p>
+<hr>
+<h3 id="Atomicity">Atomicity</h3>
+<p>Again, have a look at the simple code below:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       a<span class="token operator">++</span><span class="token punctuation">;</span>
+       <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p>Now, we use <code>javac</code> command to compile it into bytecode, and then use <code>javap</code> to decompile it to something that is human-readable.</p>
+<p>The output is:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Compiled</span> from <span class="token string">"Main.java"</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>example<span class="token punctuation">.</span></span>Main</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>example<span class="token punctuation">.</span></span>Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Code</span><span class="token operator">:</span>
+       <span class="token number">0</span><span class="token operator">:</span> aload_0
+       <span class="token number">1</span><span class="token operator">:</span> invokespecial #<span class="token number">1</span>                  <span class="token comment">// Method java/lang/Object."&lt;init&gt;":()V</span>
+       <span class="token number">4</span><span class="token operator">:</span> <span class="token keyword">return</span>
+
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Code</span><span class="token operator">:</span>
+       <span class="token number">0</span><span class="token operator">:</span> getstatic     #<span class="token number">7</span>                  <span class="token comment">// Field a:I</span>
+       <span class="token number">3</span><span class="token operator">:</span> iconst_1
+       <span class="token number">4</span><span class="token operator">:</span> iadd
+       <span class="token number">5</span><span class="token operator">:</span> putstatic     #<span class="token number">7</span>                  <span class="token comment">// Field a:I</span>
+       <span class="token number">8</span><span class="token operator">:</span> getstatic     #<span class="token number">13</span>                 <span class="token comment">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
+      <span class="token number">11</span><span class="token operator">:</span> getstatic     #<span class="token number">7</span>                  <span class="token comment">// Field a:I</span>
+      <span class="token number">14</span><span class="token operator">:</span> invokevirtual #<span class="token number">19</span>                 <span class="token comment">// Method java/io/PrintStream.println:(I)V</span>
+      <span class="token number">17</span><span class="token operator">:</span> <span class="token keyword">return</span>
+
+  <span class="token keyword">static</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token class-name">Code</span><span class="token operator">:</span>
+       <span class="token number">0</span><span class="token operator">:</span> iconst_0
+       <span class="token number">1</span><span class="token operator">:</span> putstatic     #<span class="token number">7</span>                  <span class="token comment">// Field a:I</span>
+       <span class="token number">4</span><span class="token operator">:</span> <span class="token keyword">return</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p>Now especially look at this chunk of code:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">0</span><span class="token operator">:</span> getstatic     #<span class="token number">7</span>                  <span class="token comment">// Field a:I</span>
+<span class="token number">3</span><span class="token operator">:</span> iconst_1
+<span class="token number">4</span><span class="token operator">:</span> iadd
+<span class="token number">5</span><span class="token operator">:</span> putstatic     #<span class="token number">7</span>    <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>getstatic – 	get a static field value of a class, where the field is identified by field reference in the constant pool index (indexbyte1 &lt;&lt; 8 | indexbyte2)</p>
+</blockquote>
+<blockquote>
+<p>iconst_1 – load the int value 1 onto the stack</p>
+</blockquote>
+<blockquote>
+<p>iadd – add two ints</p>
+</blockquote>
+<blockquote>
+<p>putstatic – set static field to value in a class, where the field is identified by a field reference index in constant pool (indexbyte1 &lt;&lt; 8 | indexbyte2)</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/List_of_Java_bytecode_instructions">More info about jvm commands</a></p>
+<p>This demonstrates that, even <code>a++</code> is just one line of code in java, it is actually made of 4 commands in JVM’s perspective, and we say <code>a++</code> is not atomic.</p>
+<p>What happens if atomicity is not perserved?</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Thread</span> thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                a<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">Thread</span> thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                a<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        thread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        thread<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<blockquote>
+<p>Can we estimate the output? --The answer is no, but we can tell the answer is always less than or equal to 20000.</p>
+</blockquote>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">17576</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>The reason why this happens is that <code>a++</code> is <strong>not atomic</strong>.</p>
+<p>In JVM’s perspective, we have two separate threads executing:</p>
+<ol>
+<li>Retieving <code>a</code> from constant pool.</li>
+<li>Inserting <code>1</code> into operands stack.</li>
+<li>Add <code>a</code> and <code>1</code>.</li>
+<li>Store the new value of <code>a</code> into constant pool.</li>
+</ol>
+<p>Suppose the first thread is executing 1 before the second thread executes 4, the first thread will read the old value.</p>
+<hr>
+<h3 id="Ordering">Ordering</h3>
+<p>There are 3 types of reordering:</p>
+<ol>
+<li>reordering in JIT</li>
+<li>reordering in CPU</li>
+<li>the reordering like outcome that takes place in concurrent environment due to the delay in communication between cores.</li>
+</ol>
+<p>Volatile perserves ordering by inserting memory barriers and disallowing JIT to reorder the machine code to maximise efficiency.</p>
+<hr>
+<p>The details of memory barriers will be discussed in future posts.</p>
 
                 
             </div>
@@ -576,7 +649,7 @@ Below is an example of soft reference:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2023/02/21/the-four-types-of-reference/">http://example.com/2023/02/21/the-four-types-of-reference/</a>
+                    <a href="http://example.com/2023/02/24/java-volatile/">http://example.com/2023/02/24/java-volatile/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,8 +687,12 @@ Below is an example of soft reference:
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/java-reference/">
-                                    <span class="chip bg-color">java reference</span>
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
+                                </a>
+                            
+                                <a href="/tags/java-concurrent/">
+                                    <span class="chip bg-color">java concurrent</span>
                                 </a>
                             
                         </div>
@@ -961,17 +1038,18 @@ Below is an example of soft reference:
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2023/02/22/thread-local-and-memory-leakage/">
+                <a href="/2023/02/24/java-volatile/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Thread Local and Memory Leakage">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Java Volatile">
                         
-                        <span class="card-title">Thread Local and Memory Leakage</span>
+                        <span class="card-title">Java Volatile</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -981,9 +1059,9 @@ Below is an example of soft reference:
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-22
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -992,8 +1070,13 @@ Below is an example of soft reference:
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
                     
                     <a href="/tags/java-concurrent/">
                         <span class="chip bg-color">java concurrent</span>
@@ -1010,13 +1093,13 @@ Below is an example of soft reference:
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/21/hello-world/">
+                <a href="/2023/02/23/hashmap-synchronized-map-and-concurrenthashmap/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Java Maps">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">Java Maps</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1027,7 +1110,7 @@ Below is an example of soft reference:
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-23
                             </span>
                         <span class="publish-author">
                             
@@ -1040,8 +1123,12 @@ Below is an example of soft reference:
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/hello-world/">
-                        <span class="chip bg-color">hello world</span>
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                    <a href="/tags/map/">
+                        <span class="chip bg-color">map</span>
                     </a>
                     
                 </div>

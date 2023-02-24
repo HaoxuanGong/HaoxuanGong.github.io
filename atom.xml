@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-23T11:58:55.136Z</updated>
+  <updated>2023-02-24T06:37:36.740Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>HashMap Synchronized Map and ConcurrentHashMap</title>
+    <title>Java Volatile</title>
+    <link href="http://example.com/2023/02/24/java-volatile/"/>
+    <id>http://example.com/2023/02/24/java-volatile/</id>
+    <published>2023-02-24T04:07:05.000Z</published>
+    <updated>2023-02-24T06:37:36.740Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Volatile&quot;&gt;Volatile&lt;/h2&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Conclusion: Volatile ensures visibility and ordering, and does not ensure</summary>
+        
+      
+    
+    
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="java concurrent" scheme="http://example.com/tags/java-concurrent/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java Maps</title>
     <link href="http://example.com/2023/02/23/hashmap-synchronized-map-and-concurrenthashmap/"/>
     <id>http://example.com/2023/02/23/hashmap-synchronized-map-and-concurrenthashmap/</id>
     <published>2023-02-23T08:23:32.000Z</published>
-    <updated>2023-02-23T11:58:55.136Z</updated>
+    <updated>2023-02-24T06:36:54.922Z</updated>
     
     
       
@@ -50,7 +78,7 @@
     <link href="http://example.com/2023/02/22/do-you-understand-string/"/>
     <id>http://example.com/2023/02/22/do-you-understand-string/</id>
     <published>2023-02-22T09:45:43.000Z</published>
-    <updated>2023-02-23T04:36:22.860Z</updated>
+    <updated>2023-02-24T06:38:06.339Z</updated>
     
     
       
