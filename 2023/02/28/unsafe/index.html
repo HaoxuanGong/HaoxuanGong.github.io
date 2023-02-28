@@ -4,14 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Size and Capacity In Hashmap, James777G">
-    <meta name="description" content="Difference in Size and Capacity in Hashmap
+    <meta name="keywords" content="unsafe, James777G">
+    <meta name="description" content="Unsafe Class In JDK
 
-Size
-Size in map refers to the number of key-value pairs.
+Description
 
-Capacity
-Capacity">
+
+Unsafe is a low-level class provided in jdk under sun.misc package that allows java p">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -23,7 +22,7 @@ Capacity">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Size and Capacity In Hashmap | James777G</title>
+    <title>unsafe | James777G</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -330,12 +329,12 @@ Capacity">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Size and Capacity In Hashmap</h1>
+                    <h1 class="description center-align post-title">unsafe</h1>
                 </div>
             </div>
         </div>
@@ -363,10 +362,6 @@ Capacity">
                                 <span class="chip bg-color">java</span>
                             </a>
                         
-                            <a href="/tags/map/">
-                                <span class="chip bg-color">map</span>
-                            </a>
-                        
                     </div>
                     
                 </div>
@@ -379,7 +374,7 @@ Capacity">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-02-27
+                    2023-02-28
                 </div>
                 
 
@@ -388,14 +383,14 @@ Capacity">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    456
+                    576
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    2 Min
+                    3 Min
                 </div>
                 
 
@@ -418,97 +413,112 @@ Capacity">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Difference-in-Size-and-Capacity-in-Hashmap">Difference in Size and Capacity in Hashmap</h2>
+                <h2 id="Unsafe-Class-In-JDK">Unsafe Class In JDK</h2>
 <hr>
-<h3 id="Size">Size</h3>
-<p>Size in map refers to the number of key-value pairs.</p>
-<hr>
-<h3 id="Capacity">Capacity</h3>
-<p>Capacity in map refers to the number of elements that can be put into map without resizing. (default at 16 if not declared)</p>
-<hr>
-<h3 id="Load-Factor">Load Factor</h3>
-<p>Load factor in map is used as a measure of how occupied the map is, and is also used to determine threshold.</p>
-<hr>
-<h3 id="Threshold">Threshold</h3>
-<p>Threhold is calculated by <code>size*load factor</code>, and stands for the threshold at which resize happens.</p>
-<hr>
-<h3 id="Why-is-it-recommended-to-declare-capacitance-when-the-hashmap-is-initialized">Why is it recommended to declare capacitance when the hashmap is initialized</h3>
+<h3 id="Description">Description</h3>
 <ul>
 <li>
-<p>Resizing is a very costly operation, because it involves the recreation of the collection container, reassign of the values as well as rehash if hashing is required in the container.</p>
+<p>Unsafe is a low-level class provided in jdk under sun.misc package that allows java program to directly interact with local operating system.</p>
 </li>
 <li>
-<p>Thus it is always recommended to reduce the possibility that resizing happens while minimize the memory taken by the container.</p>
+<p>Unsafe, as the name implies, is not safe and not recommended by jdk to use, and it is the programmers’ responsibility to estimate the effect of the operations made by unsafe and to not cause failures in jvm.</p>
+</li>
+<li>
+<p>Java programmers are encouraged to understand this class to fully understand what is going on at low-level in many operations, such as CAS in JUC and ByteBuffer in NIO.</p>
 </li>
 </ul>
 <hr>
+<h3 id="Initialization-of-Unsafe">Initialization of Unsafe</h3>
+<ul>
+<li>Unsafe is designed in singleton mode, which means its constructor is declared as private while there exists a public static method that gives your program the singleton object of the class.</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">Unsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@CallerSensitive</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Unsafe</span> <span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span></span> caller <span class="token operator">=</span> <span class="token class-name">Reflection</span><span class="token punctuation">.</span><span class="token function">getCallerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token constant">VM</span><span class="token punctuation">.</span><span class="token function">isSystemDomainLoader</span><span class="token punctuation">(</span>caller<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">SecurityException</span><span class="token punctuation">(</span><span class="token string">"Unsafe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> theUnsafe<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>As you may have seen, the public static method to give the singleton object is said to be <code>@CallerSensitive</code>, this means there is a check in jvm-level to justify the caller’s classloader of this method. As long as the caller’s classloader is not a bootstrap classloader, <code>SecurityException</code> will be thrown.</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * Returns true if the given class loader is the bootstrap class loader
+ * or the platform class loader.
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isSystemDomainLoader</span><span class="token punctuation">(</span><span class="token class-name">ClassLoader</span> loader<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> loader <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> loader <span class="token operator">==</span> <span class="token class-name">ClassLoader</span><span class="token punctuation">.</span><span class="token function">getPlatformClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>This means executing the code below will throw a <code>SecurityException</code> as the classLoader of the Main class is not bootstrap.</li>
+</ul>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-        <span class="token keyword">int</span> largeNumber <span class="token operator">=</span> <span class="token number">10000000</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">long</span> s1 <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> largeNumber<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token keyword">long</span> s2 <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Time spent: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>s2 <span class="token operator">-</span> s1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
+        <span class="token class-name">Unsafe</span> unsafe <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p>The above code put 10000000 key-value pairs into the hashmap without declaring capacity.</p>
-</blockquote>
-<p>The output is:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Time</span> spent<span class="token operator">:</span> <span class="token number">771</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<hr>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Unsuprisingly, the output is:</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Exception</span> in thread <span class="token string">"main"</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>SecurityException</span><span class="token operator">:</span> <span class="token class-name">Unsafe</span>
+	at jdk<span class="token punctuation">.</span>unsupported<span class="token operator">/</span><span class="token class-name"><span class="token namespace">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span></span>Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token class-name">Unsafe</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">99</span><span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>example<span class="token punctuation">.</span></span>Main</span><span class="token punctuation">.</span><span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">Main</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">13</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>However, java is a programming language that supports reflection, so we can always use reflection to force the invokation of its <strong>private</strong> constructor loaded in metaspace by doing this.</li>
+</ul>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span><span class="token punctuation">,</span> <span class="token class-name">InvocationTargetException</span><span class="token punctuation">,</span> <span class="token class-name">InstantiationException</span><span class="token punctuation">,</span> <span class="token class-name">IllegalAccessException</span> <span class="token punctuation">{</span>
 
-        <span class="token keyword">int</span> largeNumber <span class="token operator">=</span> <span class="token number">10000000</span><span class="token punctuation">;</span>
+        <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Unsafe</span><span class="token punctuation">&gt;</span></span> unsafeClass <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
 
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token number">10000000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Constructor</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Unsafe</span><span class="token punctuation">&gt;</span></span> declaredConstructor <span class="token operator">=</span> unsafeClass<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token keyword">long</span> s1 <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        declaredConstructor<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> largeNumber<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+        <span class="token class-name">Unsafe</span> unsafe <span class="token operator">=</span> declaredConstructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token keyword">long</span> s2 <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Time spent: "</span> <span class="token operator">+</span> <span class="token punctuation">(</span>s2 <span class="token operator">-</span> s1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p>The above code does the same thing but its map is initialized with a capacity that is equal to the number of key-value pairs.</p>
-</blockquote>
-<p>And the output is:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Time</span> spent<span class="token operator">:</span> <span class="token number">521</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<hr>
-<h3 id="What-is-a-recommended-value-for-capacity">What is a recommended value for capacity</h3>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li>
-<p>When we use <code>HashMap(int initialCapacity)</code> to initialize the capacity of the container, java did not take load factor into account, and simply initialize the container with the smallest power of 2 that is greater than the input <code>initialCapacity</code>.</p>
-</li>
-<li>
-<p>For example, when we had 14 as the initialCapacity, java will initialize the container with a capacity of 16 with a default load factor of 0.75 and a threshold of 12. In this case, as soon as the 13th element is inserted, the container will be resized.</p>
-</li>
-<li>
-<p>Thus, the initialCapacity is encouraged to be <code>(expectedSize/0.75) + 1</code> to not let resize happen at the expected size. Even though this definitely has inevitably <strong>wasted</strong> some memory, the searching efficiency is maintained as a result of having less number of conflicts during hashing.</p>
-</li>
+<li>Unsuprisingly, the output is here below from which we can see the unsafe instance is initialized successfully.</li>
 </ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name"><span class="token namespace">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span></span>Unsafe</span><span class="token annotation punctuation">@41629346</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h3 id="Usage">Usage</h3>
+<p>Here we will be talking about some major usages of the unsafe class.</p>
+<ul>
+<li>ByteBuffer, unsafe class is used to allocate OS memory to the input large files so that the large files would not occupy the limited resource in heap.</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">ByteBuffer</span>
+    <span class="token keyword">extends</span> <span class="token class-name">Buffer</span>
+    <span class="token keyword">implements</span> <span class="token class-name">Comparable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ByteBuffer</span><span class="token punctuation">&gt;</span></span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// Cached array base offset</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> <span class="token constant">ARRAY_BASE_OFFSET</span> <span class="token operator">=</span> <span class="token constant">UNSAFE</span><span class="token punctuation">.</span><span class="token function">arrayBaseOffset</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Atomic Classes, unsafe class is used to invoke th native methods that come with it, such as the cas operation where the atomicity is ensured by the locking mechanism that happens in OS-level.</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AtomicInteger</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>Serializable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">6214790243416807050L</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/*
+     * This class intended to be implemented using VarHandles, but there
+     * are unresolved cyclic startup dependencies.
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Unsafe</span> <span class="token class-name">U</span> <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/** Volatile version of {@link #getInt(Object, long)}  */</span>
+<span class="token annotation punctuation">@IntrinsicCandidate</span>
+<span class="token keyword">public</span> <span class="token keyword">native</span> <span class="token keyword">int</span>     <span class="token function">getIntVolatile</span><span class="token punctuation">(</span><span class="token class-name">Object</span> o<span class="token punctuation">,</span> <span class="token keyword">long</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <hr>
 <h3 id="Conclusion">Conclusion</h3>
 <blockquote>
-<p>You are encouraged to initialize your collection container with a <code>initialCapacity</code> of <code>(expectedSize/0.75) + 1</code> to maximise performance.</p>
+<p>Unsafe class is involved with many low-level operations that might directly interact with OS, thus, as the name implies, programmers must comprehend the resulting operation before utilize it to avoid failures in JVM.</p>
 </blockquote>
 
                 
@@ -536,7 +546,7 @@ Capacity">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2023/02/27/capacity/">http://example.com/2023/02/27/capacity/</a>
+                    <a href="http://example.com/2023/02/28/unsafe/">http://example.com/2023/02/28/unsafe/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -576,10 +586,6 @@ Capacity">
                             
                                 <a href="/tags/java/">
                                     <span class="chip bg-color">java</span>
-                                </a>
-                            
-                                <a href="/tags/map/">
-                                    <span class="chip bg-color">map</span>
                                 </a>
                             
                         </div>
@@ -925,9 +931,10 @@ Capacity">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2023/02/28/unsafe/">
                     <div class="card-image">
@@ -945,9 +952,9 @@ Capacity">
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -956,6 +963,7 @@ Capacity">
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -974,13 +982,13 @@ Capacity">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/24/java-volatile/">
+                <a href="/2023/02/27/capacity/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Java Volatile">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Size and Capacity In Hashmap">
                         
-                        <span class="card-title">Java Volatile</span>
+                        <span class="card-title">Size and Capacity In Hashmap</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -991,7 +999,7 @@ Capacity">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-27
                             </span>
                         <span class="publish-author">
                             
@@ -1008,8 +1016,8 @@ Capacity">
                         <span class="chip bg-color">java</span>
                     </a>
                     
-                    <a href="/tags/java-concurrent/">
-                        <span class="chip bg-color">java concurrent</span>
+                    <a href="/tags/map/">
+                        <span class="chip bg-color">map</span>
                     </a>
                     
                 </div>
