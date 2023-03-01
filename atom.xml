@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-28T04:54:34.808Z</updated>
+  <updated>2023-03-01T03:22:38.556Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring Circular Reference</title>
+    <link href="http://example.com/2023/03/01/spring-circular-reference/"/>
+    <id>http://example.com/2023/03/01/spring-circular-reference/</id>
+    <published>2023-02-28T22:58:38.000Z</published>
+    <updated>2023-03-01T03:22:38.556Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Circular-Reference-In-Spring&quot;&gt;Circular Reference In Spring&lt;/h2&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;Definition&quot;&gt;Definition:&lt;/h3&gt;
+&lt;p&gt;There are three types</summary>
+        
+      
+    
+    
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="spring" scheme="http://example.com/tags/spring/"/>
+    
+  </entry>
   
   <entry>
     <title>Java Unsafe</title>

@@ -4,13 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java Unsafe, James777G">
-    <meta name="description" content="Unsafe Class In JDK
+    <meta name="keywords" content="Spring Circular Reference, James777G">
+    <meta name="description" content="Circular Reference In Spring
 
-Description
+Definition:
+There are three types of circular reference:
 
+A has a reference to A itself
 
-Unsafe is a low-level class provided in jdk under sun.misc package that allows java p">
+@">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +24,7 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java Unsafe | James777G</title>
+    <title>Spring Circular Reference | James777G</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <style>
@@ -329,12 +331,12 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java Unsafe</h1>
+                    <h1 class="description center-align post-title">Spring Circular Reference</h1>
                 </div>
             </div>
         </div>
@@ -362,6 +364,10 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                                 <span class="chip bg-color">java</span>
                             </a>
                         
+                            <a href="/tags/spring/">
+                                <span class="chip bg-color">spring</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -374,7 +380,7 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2023-02-28
+                    2023-03-01
                 </div>
                 
 
@@ -383,14 +389,14 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    576
+                    712
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    3 Min
+                    4 Min
                 </div>
                 
 
@@ -413,113 +419,163 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Unsafe-Class-In-JDK">Unsafe Class In JDK</h2>
+                <h2 id="Circular-Reference-In-Spring">Circular Reference In Spring</h2>
 <hr>
-<h3 id="Description">Description</h3>
+<h3 id="Definition">Definition:</h3>
+<p>There are three types of circular reference:</p>
 <ul>
-<li>
-<p>Unsafe is a low-level class provided in jdk under sun.misc package that allows java program to directly interact with local operating system.</p>
-</li>
-<li>
-<p>Unsafe, as the name implies, is not safe and not recommended by jdk to use, and it is the programmers’ responsibility to estimate the effect of the operations made by unsafe and to not cause failures in jvm.</p>
-</li>
-<li>
-<p>Java programmers are encouraged to understand this class to fully understand what is going on at low-level in many operations, such as CAS in JUC and ByteBuffer in NIO.</p>
-</li>
+<li>A has a reference to A itself</li>
 </ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">A</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>A has a reference to B and B has a reference to A</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">B</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Data</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">A</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>A has a reference to B, and B has a reference to C, and C has a reference to A.</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">B</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Data</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">C</span> c<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Data</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">A</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
-<h3 id="Initialization-of-Unsafe">Initialization of Unsafe</h3>
-<ul>
-<li>Unsafe is designed in singleton mode, which means its constructor is declared as private while there exists a public static method that gives your program the singleton object of the class.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">Unsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@CallerSensitive</span>
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Unsafe</span> <span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span></span> caller <span class="token operator">=</span> <span class="token class-name">Reflection</span><span class="token punctuation">.</span><span class="token function">getCallerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token constant">VM</span><span class="token punctuation">.</span><span class="token function">isSystemDomainLoader</span><span class="token punctuation">(</span>caller<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">SecurityException</span><span class="token punctuation">(</span><span class="token string">"Unsafe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> theUnsafe<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>As you may have seen, the public static method to give the singleton object is said to be <code>@CallerSensitive</code>, this means there is a check in jvm-level to justify the caller’s classloader of this method. As long as the caller’s classloader is not a bootstrap classloader, <code>SecurityException</code> will be thrown.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
- * Returns true if the given class loader is the bootstrap class loader
- * or the platform class loader.
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isSystemDomainLoader</span><span class="token punctuation">(</span><span class="token class-name">ClassLoader</span> loader<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> loader <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> loader <span class="token operator">==</span> <span class="token class-name">ClassLoader</span><span class="token punctuation">.</span><span class="token function">getPlatformClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>This means executing the code below will throw a <code>SecurityException</code> as the classLoader of the Main class is not bootstrap.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+<h3 id="Spring-Approach">Spring Approach</h3>
+<p>It is fairly easy to initialize objects with circular reference if we are able to specify which objects should be initialized at first.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@org.testng.annotations.Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">A</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">B</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">C</span> c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">C</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">.</span><span class="token function">setB</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    b<span class="token punctuation">.</span><span class="token function">setC</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    c<span class="token punctuation">.</span><span class="token function">setA</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token class-name">Unsafe</span> unsafe <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>Unsuprisingly, the output is:</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Exception</span> in thread <span class="token string">"main"</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>SecurityException</span><span class="token operator">:</span> <span class="token class-name">Unsafe</span>
-	at jdk<span class="token punctuation">.</span>unsupported<span class="token operator">/</span><span class="token class-name"><span class="token namespace">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span></span>Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token class-name">Unsafe</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">99</span><span class="token punctuation">)</span>
-	at <span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>example<span class="token punctuation">.</span></span>Main</span><span class="token punctuation">.</span><span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">Main</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">13</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>However, java is a programming language that supports reflection, so we can always use reflection to force the invokation of its <strong>private</strong> constructor loaded in metaspace by doing this.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span><span class="token punctuation">,</span> <span class="token class-name">InvocationTargetException</span><span class="token punctuation">,</span> <span class="token class-name">InstantiationException</span><span class="token punctuation">,</span> <span class="token class-name">IllegalAccessException</span> <span class="token punctuation">{</span>
+<span class="token annotation punctuation">@NoArgsConstructor</span>
+<span class="token annotation punctuation">@Setter</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">B</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-        <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Unsafe</span><span class="token punctuation">&gt;</span></span> unsafeClass <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<span class="token annotation punctuation">@NoArgsConstructor</span>
+<span class="token annotation punctuation">@Setter</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">C</span> c<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-        <span class="token class-name">Constructor</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Unsafe</span><span class="token punctuation">&gt;</span></span> declaredConstructor <span class="token operator">=</span> unsafeClass<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        declaredConstructor<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">Unsafe</span> unsafe <span class="token operator">=</span> declaredConstructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>Unsuprisingly, the output is here below from which we can see the unsafe instance is initialized successfully.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name"><span class="token namespace">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span></span>Unsafe</span><span class="token annotation punctuation">@41629346</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<hr>
-<h3 id="Usage">Usage</h3>
-<p>Here we will be talking about some major usages of the unsafe class.</p>
-<ul>
-<li>ByteBuffer, unsafe class is used to allocate OS memory to the input large files so that the large files would not occupy the limited resource in heap.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">ByteBuffer</span>
-    <span class="token keyword">extends</span> <span class="token class-name">Buffer</span>
-    <span class="token keyword">implements</span> <span class="token class-name">Comparable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ByteBuffer</span><span class="token punctuation">&gt;</span></span>
-<span class="token punctuation">{</span>
-    <span class="token comment">// Cached array base offset</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> <span class="token constant">ARRAY_BASE_OFFSET</span> <span class="token operator">=</span> <span class="token constant">UNSAFE</span><span class="token punctuation">.</span><span class="token function">arrayBaseOffset</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>Atomic Classes, unsafe class is used to invoke th native methods that come with it, such as the cas operation where the atomicity is ensured by the locking mechanism that happens in OS-level.</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AtomicInteger</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>Serializable</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">6214790243416807050L</span><span class="token punctuation">;</span>
-
-    <span class="token comment">/*
-     * This class intended to be implemented using VarHandles, but there
-     * are unresolved cyclic startup dependencies.
-     */</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Unsafe</span> <span class="token class-name">U</span> <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/** Volatile version of {@link #getInt(Object, long)}  */</span>
-<span class="token annotation punctuation">@IntrinsicCandidate</span>
-<span class="token keyword">public</span> <span class="token keyword">native</span> <span class="token keyword">int</span>     <span class="token function">getIntVolatile</span><span class="token punctuation">(</span><span class="token class-name">Object</span> o<span class="token punctuation">,</span> <span class="token keyword">long</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<hr>
-<h3 id="Conclusion">Conclusion</h3>
+<span class="token annotation punctuation">@NoArgsConstructor</span>
+<span class="token annotation punctuation">@Setter</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">A</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>The output shows the objects are initialized with no issues.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>maven<span class="token punctuation">.</span>apache<span class="token punctuation">.</span></span>Test</span>$<span class="token class-name">A</span><span class="token annotation punctuation">@1f2586d6</span>
+<span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>maven<span class="token punctuation">.</span>apache<span class="token punctuation">.</span></span>Test</span>$<span class="token class-name">B</span><span class="token annotation punctuation">@10683d9d</span>
+<span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>maven<span class="token punctuation">.</span>apache<span class="token punctuation">.</span></span>Test</span>$<span class="token class-name">C</span><span class="token annotation punctuation">@3fc2959f</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>However, the issue of circular reference could be pretty awful to deal with in spring, because spring accomplishes all the dependency injection before we even know it.</p>
 <blockquote>
-<p>Unsafe class is involved with many low-level operations that might directly interact with OS, thus, as the name implies, programmers must comprehend the resulting operation before utilize it to avoid failures in JVM.</p>
+<p>So, how does spring solve circular reference.</p>
 </blockquote>
+<ul>
+<li>Answer:</li>
+</ul>
+<blockquote>
+<p>By 3 levels of cache</p>
+</blockquote>
+<p>Namely, singletonObjects, singletonFactories and earlySingletonObjects.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/** Cache of singleton objects: bean name to bean instance. */</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> singletonObjects <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcurrentHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/** Cache of singleton factories: bean name to ObjectFactory. */</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">ObjectFactory</span><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span><span class="token punctuation">&gt;</span></span> singletonFactories <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/** Cache of early singleton objects: bean name to bean instance. */</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">&gt;</span></span> earlySingletonObjects <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcurrentHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>When the program tries to retrieve a bean within the factory,</p>
+<ul>
+<li>
+<p>Spring will firstly check if the bean is already inside singletonObjects, if yes, return the object inside singletonObjects, if no, create the bean.</p>
+<ul>
+<li>
+<p>If the bean about to be created requires dependency from other beans, check if the required bean is created, if no, create the required bean, while putting the bean requiring the dependency into singletonFactories.</p>
+</li>
+<li>
+<p>If the creation of the required bean also need reference from other beans, check if the bean exist in the singletonFactories or singletonObjects, if the bean is inside singletonFactories, firstly check if the objectFactory comes with dynamic proxy.</p>
+</li>
+<li>
+<p>If it does come with dynamic proxy, initialize the early reference of the proxy of the bean without dependency injection and returns this bean to the very first bean that requires dependency, while putting the current bean into singletonObjects.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Spring successfully get the required dependency within singletonObjects and return the current bean.</p>
+</li>
+</ul>
+<hr>
+<h3 id="Limitations">Limitations</h3>
+<p>The approach that spring takes to solve circular reference requires the initialization of the bean to allow early reference.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * Return the (raw) singleton object registered under the given name.
+ * &lt;p&gt;Checks already instantiated singletons and also allows for an early
+ * reference to a currently created singleton (resolving a circular reference).
+ * @param beanName the name of the bean to look for
+ * @param allowEarlyReference whether early references should be created or not
+ * @return the registered singleton object, or {@code null} if none found
+ */</span>
+<span class="token annotation punctuation">@Nullable</span>
+<span class="token keyword">protected</span> <span class="token class-name">Object</span> <span class="token function">getSingleton</span><span class="token punctuation">(</span><span class="token class-name">String</span> beanName<span class="token punctuation">,</span> <span class="token keyword">boolean</span> allowEarlyReference<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// Quick check for existing instance without full singleton lock</span>
+	<span class="token class-name">Object</span> singletonObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>singletonObjects<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isSingletonCurrentlyInCreation</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		singletonObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>earlySingletonObjects<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> allowEarlyReference<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>singletonObjects<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token comment">// Consistent creation of early reference within full singleton lock</span>
+				singletonObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>singletonObjects<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">if</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+					singletonObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>earlySingletonObjects<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+					<span class="token keyword">if</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+						<span class="token class-name">ObjectFactory</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">&gt;</span></span> singletonFactory <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>singletonFactories<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+						<span class="token keyword">if</span> <span class="token punctuation">(</span>singletonFactory <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+							singletonObject <span class="token operator">=</span> singletonFactory<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+							<span class="token keyword">this</span><span class="token punctuation">.</span>earlySingletonObjects<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> singletonObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+							<span class="token keyword">this</span><span class="token punctuation">.</span>singletonFactories<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+						<span class="token punctuation">}</span>
+					<span class="token punctuation">}</span>
+				<span class="token punctuation">}</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> singletonObject<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>For operations like, <code>@Async</code> annotation that does not allow early reference to be created in earlySingletonObjects, spring is not able to handle it when circular reference occurs.</p>
+<p>Also, for dependency injection using constructors, it is also not possible for spring to solve the circular reference issue, because dependecies cannot be injected separately.</p>
 
                 
             </div>
@@ -546,7 +602,7 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2023/02/28/unsafe/">http://example.com/2023/02/28/unsafe/</a>
+                    <a href="http://example.com/2023/03/01/spring-circular-reference/">http://example.com/2023/03/01/spring-circular-reference/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -586,6 +642,10 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                             
                                 <a href="/tags/java/">
                                     <span class="chip bg-color">java</span>
+                                </a>
+                            
+                                <a href="/tags/spring/">
+                                    <span class="chip bg-color">spring</span>
                                 </a>
                             
                         </div>
@@ -931,9 +991,10 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2023/03/01/spring-circular-reference/">
                     <div class="card-image">
@@ -951,9 +1012,9 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-01
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -962,6 +1023,7 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -984,13 +1046,13 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/02/27/capacity/">
+                <a href="/2023/02/28/unsafe/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Size and Capacity In Hashmap">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java Unsafe">
                         
-                        <span class="card-title">Size and Capacity In Hashmap</span>
+                        <span class="card-title">Java Unsafe</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1001,7 +1063,7 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-28
                             </span>
                         <span class="publish-author">
                             
@@ -1016,10 +1078,6 @@ Unsafe is a low-level class provided in jdk under sun.misc package that allows j
                     
                     <a href="/tags/java/">
                         <span class="chip bg-color">java</span>
-                    </a>
-                    
-                    <a href="/tags/map/">
-                        <span class="chip bg-color">map</span>
                     </a>
                     
                 </div>
