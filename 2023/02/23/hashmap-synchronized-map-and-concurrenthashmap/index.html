@@ -27,15 +27,6 @@ In JDK 8 and after: HashMa">
     <title>Java Maps | James777G</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
-    <style>
-        body{
-            background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
-            background-repeat:no-repeat;
-            background-size: 100% 100%;
-            background-attachment:fixed;
-        }
-    </style>
-
 
 
     <!-- bg-cover style     -->
@@ -109,17 +100,6 @@ In JDK 8 and after: HashMa">
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
       <span>Tags</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>Categories</span>
     </a>
     
   </li>
@@ -204,17 +184,6 @@ In JDK 8 and after: HashMa">
 			    <i class="fa-fw fas fa-tags"></i>
 			
 			Tags
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			Categories
 		</a>
           
         </li>
@@ -389,14 +358,14 @@ In JDK 8 and after: HashMa">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    419
+                    954
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    2 Min
+                    5 Min
                 </div>
                 
 
@@ -432,6 +401,115 @@ In JDK 8 and after: HashMa">
 <p>The data structure of a hashmap are array and linkedList when a hashmap is initialized and empty, when the number of elements in the list reaches a threshold of 8, the implementation is changed from array to red-black tree.</p>
 <p>The advantage of using array is that array requires less space compared to a red-black tree. However, the time-complexity to retrieve a particular element in array requires the program to scan through the whole array which has an average of O(n).</p>
 <p>The advantage of using red-black tree is that the time-complexity in retriving a particular element is O(log(n)).</p>
+<hr>
+<h4 id="Load-Factor-in-Hashmap">Load Factor in Hashmap</h4>
+<p>Load factor in hashmap has a default value of 0.75 and it is not recommended to alter its value.</p>
+<p>And here we will be talking about what this 0.75 load factor actually stands for:</p>
+<ul>
+<li>Take a look at the code below:</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Double</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Random</span> random <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">100000</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span>array<span class="token punctuation">,</span> <span class="token number">99</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">12</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> num <span class="token operator">=</span> random<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            array<span class="token punctuation">[</span>num<span class="token punctuation">]</span> <span class="token operator">=</span> num<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">double</span> prob <span class="token operator">=</span> <span class="token function">findProb</span><span class="token punctuation">(</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>prob<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">findAve</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span> <span class="token function">findProb</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> count <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>value <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">==</span> <span class="token number">99</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    count<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">++</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">double</span> a <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> count<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">-</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">double</span> <span class="token function">findAve</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Double</span><span class="token punctuation">&gt;</span></span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> <span class="token keyword">double</span><span class="token punctuation">[</span><span class="token punctuation">]</span> result <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    a<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>aDouble <span class="token operator">-&gt;</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> aDouble<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">-</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">/</span> a<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>
+<p>In the code above, I have intentionally mocked the environment where there is an universal hash function and try estimate the probabilty that the next insertion lands on an empty bucket when there are 0.75 * capacity in hashmap.</p>
+</li>
+<li>
+<p>The code is looped 100k times and the average value is taken:</p>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">0.46090312499999997</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>The result is near 0.5, from which we can conclude 0.75 (3/4) is the nearest value that could be divided by the power of 2, while giving 50% chance for the next element to land on an empty bucket.</li>
+</ul>
+<hr>
+<h4 id="Treeify-Threshold">Treeify_Threshold</h4>
+<p><code>static final int TREEIFY_THRESHOLD = 8;</code><br>
+Treeify_Threshold has a default value of 8, and here is why:</p>
+<ul>
+<li>In JDK official document, we can find:</li>
+</ul>
+<pre class="line-numbers language-none"><code class="language-none">Ideally, under random hashCodes, the frequency of
+     * nodes in bins follows a Poisson distribution
+     * (http://en.wikipedia.org/wiki/Poisson_distribution) with a
+     * parameter of about 0.5 on average for the default resizing
+     * threshold of 0.75, although with a large variance because of
+     * resizing granularity. Ignoring variance, the expected
+     * occurrences of list size k are (exp(-0.5) * pow(0.5, k) /
+     * factorial(k)). The first values are:
+     *
+     * 0:    0.60653066
+     * 1:    0.30326533
+     * 2:    0.07581633
+     * 3:    0.01263606
+     * 4:    0.00157952
+     * 5:    0.00015795
+     * 6:    0.00001316
+     * 7:    0.00000094
+     * 8:    0.00000006
+     * more: less than 1 in ten million<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>
+<p>This means under universal hash function, the probability that the linkedList is converted to a red-black tree is 0.00000006</p>
+</li>
+<li>
+<p>This ensures the conversion from list to red-black tree does not happen regularly as this conversion is very expensive.</p>
+</li>
+<li>
+<p>You may have noticed that this value is still too small to be practical.</p>
+<ul>
+<li>
+<p>You are actually correct, however the conclusion you gave is based on the assumption that we have a universal hash function.</p>
+</li>
+<li>
+<p>In reality, some people override the <code>hashcode()</code> method like below:</p>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">300</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>By doing this, the probability that your objects fall into the same bucket and have a list of length greater than 8 rises to 100%, thus in such scenarios, the conversion to red-black tree is really useful in terms of improving its searching time-complexity to <code>O(log(n))</code></li>
+</ul>
+</li>
+</ul>
 <hr>
 <h3 id="Concurrent-HashMap">Concurrent HashMap</h3>
 <p>The concurrent hashmap is safe to use in concurrent environment, because all the update methods are described as synchronized.</p>
@@ -1363,6 +1441,8 @@ $(function () {
 
     
 
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
     
 
     
